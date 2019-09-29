@@ -9,6 +9,10 @@ router.get("/", (request, response, next) => {
 });
 
 router.post("/send", (request, response, next) => {
+  return response.status(200).json({
+    message: "Handle http POST request for /send "
+  });
+
   let domain = request.headers.host;
 
   let senderName = request.body.contactFormName || `Mail from ${domain}`;
