@@ -9,9 +9,9 @@ router.get("/", (request, response, next) => {
 });
 
 router.post("/send", (request, response, next) => {
-  return response.status(200).json({
-    message: "Handle http POST request for /send "
-  });
+  // return response.status(200).json({
+  //   message: "Handle http POST request for /send "
+  // });
 
   let domain = request.headers.host;
 
@@ -20,7 +20,7 @@ router.post("/send", (request, response, next) => {
   let messageSubject = request.body.contactFormSubjects || "Information";
   let messageText = request.body.contactFormMessage || null;
   let copyToSender = request.body.contactFormCopy || false;
-
+  console.log("After first if", request.body);
   if (!domain) {
     return response.status(401).json({ message: "No domain found" });
   } else if (!senderEmail) {
@@ -29,6 +29,7 @@ router.post("/send", (request, response, next) => {
     return response.status(400).json({ message: "Message is required." });
   }
 
+  console.log("After first if");
   let mailOptions;
   let transporterOptions = {
     host: "smtp.gmail.com",
