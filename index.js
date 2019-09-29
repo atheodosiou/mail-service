@@ -2,12 +2,12 @@ const express = require("express");
 const nodemailer = require("nodemailer");
 const app = express();
 const dotenv = require("dotenv");
-const port = 3000;
+let port = 3000;
 const bodyParser = require("body-parser");
 // import bodyParser from 'body-parser';
 
 dotenv.config();
-
+port = process.env.PORT;
 // const transporter = nodemailer.createTransport({
 //   host: "smtp.gmail.com",
 //   provider: "gmail",
