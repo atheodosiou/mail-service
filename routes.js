@@ -9,10 +9,6 @@ router.get("/", (request, response, next) => {
 });
 
 router.post("/send", (request, response, next) => {
-  // return response.status(200).json({
-  //   message: "Handle http POST request for /send "
-  // });
-
   let domain = request.headers.host;
 
   let senderName = request.body.contactFormName || `Mail from ${domain}`;
@@ -20,17 +16,15 @@ router.post("/send", (request, response, next) => {
   let messageSubject = request.body.contactFormSubjects || "Information";
   let messageText = request.body.contactFormMessage || null;
   let copyToSender = request.body.contactFormCopy || false;
-  console.log("After first if", request.body);
-  if (!domain) {
-    return response.status(401).json({ message: "No domain found" });
+
+  if (!request.body.recepient) {
+    return response.status(400).json({ message: "No recepient found" });
   } else if (!senderEmail) {
     return response.status(400).json({ message: "Email is required." });
   } else if (!messageText) {
     return response.status(400).json({ message: "Message is required." });
   }
 
-  console.log("After first if");
-  let mailOptions;
   let transporterOptions = {
     host: "smtp.gmail.com",
     provider: "gmail",
@@ -42,42 +36,25 @@ router.post("/send", (request, response, next) => {
     }
   };
 
-  switch (domain) {
-    case process.env.HOST_T:
-      mailOptions = {
-        to: [process.env.MAIL_T],
-        from: senderName,
-        subject: messageSubject,
-        text: messageText,
-        replyTo: senderEmail
-      };
-      transporterOptions.auth.user = process.env.MAIL_T;
-      transporterOptions.auth.pass = process.env.PASS_T;
-      break;
-    case process.env.HOST_P:
-      mailOptions = {
-        to: [process.env.MAIL_P],
-        from: senderName,
-        subject: messageSubject,
-        text: messageText,
-        replyTo: senderEmail
-      };
-      transporterOptions.auth.user = process.env.MAIL_P;
-      transporterOptions.auth.pass = process.env.PASS_P;
-      break;
-    // default:
-    //   mailOptions = {
-    //     to: ["anastasios.theodosiou@gmail.com"],
-    //     from: senderName,
-    //     subject: messageSubject,
-    //     text: messageText,
-    //     replyTo: senderEmail
-    //   };
-    //   transporterOptions.auth.user = process.env.MAIL_T;
-    //   transporterOptions.auth.pass = process.env.PASS_T;
-    //   break;
-  }
-  console.log("mailOptions", mailOptions);
+  let mailOptions = {
+    to:
+      request.body.recepient === "tasos"
+        ? ["anastasios.theodosiou@gmail.com"]
+        : ["padelis.theodosiou@gmail.com"],
+    from: senderName,
+    subject: messageSubject,
+    text: messageText,
+    replyTo: senderEmail
+  };
+  transporterOptions.auth.user =
+    request.body.recepient === "tasos"
+      ? process.env.MAIL_T
+      : process.env.MAIL_P;
+  transporterOptions.auth.pass =
+    request.body.recepient === "tasos"
+      ? process.env.PASS_T
+      : process.env.PASS_P;
+
   let transporter = nodeMailer.createTransport(transporterOptions);
 
   if (copyToSender) mailOptions.to.push(senderEmail);
