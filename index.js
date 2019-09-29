@@ -7,7 +7,7 @@ const bodyParser = require("body-parser");
 // import bodyParser from 'body-parser';
 
 dotenv.config();
-port = process.env.PORT;
+port = process.env.PORT || 3000;
 // const transporter = nodemailer.createTransport({
 //   host: "smtp.gmail.com",
 //   provider: "gmail",

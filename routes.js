@@ -2,6 +2,12 @@ const express = require("express");
 const router = express.Router();
 const nodeMailer = require("nodemailer");
 
+router.get("/", (request, response, next) => {
+  return response.status(200).json({
+    message: "Mail Service is Working!"
+  });
+});
+
 router.post("/send", (request, response, next) => {
   let domain = request.headers.host;
 
