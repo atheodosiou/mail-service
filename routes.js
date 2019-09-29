@@ -77,7 +77,7 @@ router.post("/send", (request, response, next) => {
     //   transporterOptions.auth.pass = process.env.PASS_T;
     //   break;
   }
-
+  console.log("mailOptions", mailOptions);
   let transporter = nodeMailer.createTransport(transporterOptions);
 
   if (copyToSender) mailOptions.to.push(senderEmail);
