@@ -46,10 +46,23 @@ router.post("/send", (request, response, next) => {
     text: messageText,
     replyTo: senderEmail
   };
+
+  let auth = {
+    user:
+      request.body.recepient === "tasos"
+        ? process.env.MAIL_T
+        : process.env.MAIL_P,
+    pass:
+      request.body.recepient === "tasos"
+        ? process.env.PASS_T
+        : process.env.PASS_P
+  };
+
   transporterOptions.auth.user =
     request.body.recepient === "tasos"
       ? process.env.MAIL_T
       : process.env.MAIL_P;
+
   transporterOptions.auth.pass =
     request.body.recepient === "tasos"
       ? process.env.PASS_T
@@ -63,7 +76,6 @@ router.post("/send", (request, response, next) => {
     if (error) {
       return response.status(400).json({ message: "Something went wrong!" });
     } else {
-      console.log(JSON.stringify(res, null, 1));
       return response.status(200).json({ message: "Mail sent!" });
     }
   });
