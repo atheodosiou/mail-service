@@ -72,10 +72,12 @@ router.post("/send", (request, response, next) => {
 
   if (copyToSender) mailOptions.to.push(senderEmail);
 
-  return response.status(200).json({
-    transporter: JSON.stringify(transporter),
-    mailOptions: JSON.stringify(mailOptions)
-  });
+  console.log(
+    JSON.stringify(transporter, null, 2),
+    JSON.stringify(mailOptions, null, 2)
+  );
+
+  return response.status(200).json({});
 
   transporter.sendMail(mailOptions, (error, res) => {
     if (error) {
