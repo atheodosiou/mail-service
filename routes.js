@@ -72,6 +72,11 @@ router.post("/send", (request, response, next) => {
 
   if (copyToSender) mailOptions.to.push(senderEmail);
 
+  return response.status(200).json({
+    transporter: transporter,
+    mailOptions: mailOptions
+  });
+
   transporter.sendMail(mailOptions, (error, res) => {
     if (error) {
       return response.status(400).json({ message: "Something went wrong!" });
