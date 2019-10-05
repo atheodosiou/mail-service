@@ -73,7 +73,7 @@ router.post("/send", (request, response, next) => {
   if (copyToSender) mailOptions.to.push(senderEmail);
 
   console.log(
-    JSON.stringify(transporter, null, 2),
+    JSON.stringify(transporterOptions, null, 2),
     JSON.stringify(mailOptions, null, 2)
   );
 
