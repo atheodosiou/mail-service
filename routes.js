@@ -73,8 +73,8 @@ router.post("/send", (request, response, next) => {
   if (copyToSender) mailOptions.to.push(senderEmail);
 
   return response.status(200).json({
-    transporter: transporter,
-    mailOptions: mailOptions
+    transporter: JSON.stringify(transporter),
+    mailOptions: JSON.stringify(mailOptions)
   });
 
   transporter.sendMail(mailOptions, (error, res) => {
